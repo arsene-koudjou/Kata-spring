@@ -1,6 +1,6 @@
 #accéder au repertoire du script de lancement
 
-cd spring-boot-swagger-Kata/src/main/java/com/kata/spring/swagger/deploiement/bin
+cd spring-boot-swagger-Kata/src/main/java/com/kata/spring/swagger/deploiement
 
 #création du dossier pour les logs
 
