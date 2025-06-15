@@ -1,3 +1,0 @@
-3  "FOOFOO"
-15  "FOOBARBAR"
-51  "FOOBAR"

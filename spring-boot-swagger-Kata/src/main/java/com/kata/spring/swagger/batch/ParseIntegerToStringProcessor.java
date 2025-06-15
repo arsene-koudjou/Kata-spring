@@ -8,9 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IntegerToStringProcessor implements ItemProcessor<NumberItem, String> {
-    @Autowired
-    private KataService kataService;
+public class ParseIntegerToStringProcessor implements ItemProcessor<NumberItem, String> {
+
+    private final KataService kataService;
+
+    public ParseIntegerToStringProcessor(KataService kataService){
+        this.kataService = kataService;
+    }
+    
     @Override
     public String process(NumberItem item) {
         if (item.getNumber() < 1 || item.getNumber() > 99) {

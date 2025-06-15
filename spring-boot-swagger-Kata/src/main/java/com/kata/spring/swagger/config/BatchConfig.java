@@ -1,8 +1,9 @@
 package com.kata.spring.swagger.config;
-import com.kata.spring.swagger.batch.IntegerToStringProcessor;
+import com.kata.spring.swagger.batch.ParseIntegerToStringProcessor;
 import com.kata.spring.swagger.batch.listeners.NotificationListenerForJobCompletion;
 import com.kata.spring.swagger.batch.listeners.SkipLoggingListener;
 import com.kata.spring.swagger.model.NumberItem;
+import com.kata.spring.swagger.service.KataService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.*;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -44,26 +45,26 @@ public class BatchConfig {
     }
 
     @Bean
-    public IntegerToStringProcessor processor() {
-        return new IntegerToStringProcessor();
+    public ParseIntegerToStringProcessor processor() {
+        return new ParseIntegerToStringProcessor(new KataService());
     }
 
     @Bean
     public Job importJob(JobRepository jobRepository,
-                         Step step1,
+                         Step kataStep,
                          NotificationListenerForJobCompletion listener) {
         return new JobBuilder("importJob", jobRepository)
-                .start(step1)
+                .start(kataStep)
                 .listener(listener)
                 .build();
     }
 
     @Bean
-    public Step step1(JobRepository jobRepository,
+    public Step kataStep(JobRepository jobRepository,
                       PlatformTransactionManager transactionManager,
                       FlatFileItemReader<NumberItem> reader,
                       FlatFileItemWriter<String> writer) {
-        return new StepBuilder("step1", jobRepository)
+        return new StepBuilder("kataStep", jobRepository)
                 .<NumberItem, String>chunk(15, transactionManager)
                 .reader(reader)
                 .processor(processor())
