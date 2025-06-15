@@ -1,14 +1,14 @@
 package com.kata.spring.swagger.batch;
 
 
-import com.kata.spring.swagger.model.NumberItem;
+import com.kata.spring.swagger.model.KataItem;
 import com.kata.spring.swagger.service.KataService;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ParseIntegerToStringProcessor implements ItemProcessor<NumberItem, String> {
+public class ParseIntegerToStringProcessor implements ItemProcessor<KataItem, String> {
 
     private final KataService kataService;
 
@@ -17,7 +17,7 @@ public class ParseIntegerToStringProcessor implements ItemProcessor<NumberItem, 
     }
     
     @Override
-    public String process(NumberItem item) {
+    public String process(KataItem item) {
         if (item.getNumber() < 1 || item.getNumber() > 99) {
             throw new IllegalArgumentException("Le nombre doit etre compris entre 0 et 100 ");
         }

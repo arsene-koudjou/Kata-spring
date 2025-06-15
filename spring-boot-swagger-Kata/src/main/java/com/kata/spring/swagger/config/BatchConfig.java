@@ -2,7 +2,7 @@ package com.kata.spring.swagger.config;
 import com.kata.spring.swagger.batch.ParseIntegerToStringProcessor;
 import com.kata.spring.swagger.batch.listeners.NotificationListenerForJobCompletion;
 import com.kata.spring.swagger.batch.listeners.SkipLoggingListener;
-import com.kata.spring.swagger.model.NumberItem;
+import com.kata.spring.swagger.model.KataItem;
 import com.kata.spring.swagger.service.KataService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.*;
@@ -26,11 +26,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class BatchConfig {
     @Bean
     @StepScope
-    public FlatFileItemReader<NumberItem> reader(@Value("${kata.openapi.source-file}") String filePath) {
-        return new FlatFileItemReaderBuilder<NumberItem>()
+    public FlatFileItemReader<KataItem> reader(@Value("${kata.openapi.source-file}") String filePath) {
+        return new FlatFileItemReaderBuilder<KataItem>()
                 .name("numberReader")
                 .resource(new FileSystemResource(filePath))
-                .lineMapper((line, lineNumber) -> new NumberItem(Integer.parseInt(line)))
+                .lineMapper((line, lineNumber) -> new KataItem(Integer.parseInt(line)))
                 .build();
     }
 
@@ -62,10 +62,10 @@ public class BatchConfig {
     @Bean
     public Step kataStep(JobRepository jobRepository,
                       PlatformTransactionManager transactionManager,
-                      FlatFileItemReader<NumberItem> reader,
+                      FlatFileItemReader<KataItem> reader,
                       FlatFileItemWriter<String> writer) {
         return new StepBuilder("kataStep", jobRepository)
-                .<NumberItem, String>chunk(15, transactionManager)
+                .<KataItem, String>chunk(15, transactionManager)
                 .reader(reader)
                 .processor(processor())
                 .writer(writer)

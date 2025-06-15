@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.Kata</groupId>
-	<artifactId>spring-boot-swagger-3-example</artifactId>
+	<artifactId>kata</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot-swagger-3-example</name>
+	<name>kata</name>
 	<description>Kata Project with Rest API Documentation</description>
 	<properties>
 		<java.version>17</java.version>
