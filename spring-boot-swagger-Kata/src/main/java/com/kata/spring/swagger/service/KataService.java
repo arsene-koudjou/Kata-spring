@@ -10,7 +10,7 @@ public class KataService {
         return str.append(String.valueOf(intParameter)).append("  \"").append(res).append("\"").toString();
     }
     public  String getCharactersFromString(int intNumber) {
-        if (intNumber < 0 || intNumber > 100) {
+        if (intNumber < 1 || intNumber > 99) {
             throw new IllegalArgumentException("Le nombre doit etre compris entre 0 et 100 ");
         }
         String parseNumberToString = String.valueOf(intNumber);

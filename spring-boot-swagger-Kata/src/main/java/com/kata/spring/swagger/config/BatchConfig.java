@@ -1,6 +1,7 @@
 package com.kata.spring.swagger.config;
 import com.kata.spring.swagger.batch.IntegerToStringProcessor;
-import com.kata.spring.swagger.batch.JobCompletionNotificationListener;
+import com.kata.spring.swagger.batch.listeners.NotificationListenerForJobCompletion;
+import com.kata.spring.swagger.batch.listeners.SkipLoggingListener;
 import com.kata.spring.swagger.model.NumberItem;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.*;
@@ -50,7 +51,7 @@ public class BatchConfig {
     @Bean
     public Job importJob(JobRepository jobRepository,
                          Step step1,
-                         JobCompletionNotificationListener listener) {
+                         NotificationListenerForJobCompletion listener) {
         return new JobBuilder("importJob", jobRepository)
                 .start(step1)
                 .listener(listener)
@@ -63,10 +64,16 @@ public class BatchConfig {
                       FlatFileItemReader<NumberItem> reader,
                       FlatFileItemWriter<String> writer) {
         return new StepBuilder("step1", jobRepository)
-                .<NumberItem, String>chunk(10, transactionManager)
+                .<NumberItem, String>chunk(15, transactionManager)
                 .reader(reader)
                 .processor(processor())
                 .writer(writer)
+                .faultTolerant()
+                .skip(IllegalArgumentException.class)
+                .skip(NumberFormatException.class)
+                .skip(FlatFileParseException.class)
+                .skipLimit(50)
+                .listener(new SkipLoggingListener())
                 .build();
     }
 }

@@ -13,6 +13,9 @@ public class IntegerToStringProcessor implements ItemProcessor<NumberItem, Strin
     private KataService kataService;
     @Override
     public String process(NumberItem item) {
+        if (item.getNumber() < 1 || item.getNumber() > 99) {
+            throw new IllegalArgumentException("Le nombre doit etre compris entre 0 et 100 ");
+        }
         return this.kataService.getCharactersFromString(item.getNumber());
     }
 

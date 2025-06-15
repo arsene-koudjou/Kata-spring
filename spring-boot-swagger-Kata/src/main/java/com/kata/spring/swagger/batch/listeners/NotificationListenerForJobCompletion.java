@@ -1,4 +1,4 @@
-package com.kata.spring.swagger.batch;
+package com.kata.spring.swagger.batch.listeners;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,21 +8,21 @@ import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JobCompletionNotificationListener implements JobExecutionListener {
+public class NotificationListenerForJobCompletion implements JobExecutionListener {
 
-    private static final Logger log = LoggerFactory.getLogger(JobCompletionNotificationListener.class);
+    private static final Logger log = LoggerFactory.getLogger(NotificationListenerForJobCompletion.class);
 
     @Override
     public void beforeJob(JobExecution jobExecution) {
-        log.info("Job started...");
+        log.info("Le Job a démaré correctement...");
     }
 
     @Override
     public void afterJob(JobExecution jobExecution) {
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
-            log.info("✅ Job finished successfully!");
+            log.info("le Job s'est terminé avec succès !!!");
         } else {
-            log.warn("⚠️ Job finished with status: {}", jobExecution.getStatus());
+            log.warn("le job s'est arreté au status: {}", jobExecution.getStatus());
         }
     }
 }

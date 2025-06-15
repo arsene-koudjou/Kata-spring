@@ -17,16 +17,16 @@ public class JobScheduler {
     @Autowired
     private Job importJob;
 
-    // Planification toutes les 5 minutes (modifiable)
-    @Scheduled(fixedRate = 5000) // ou utiliser cron = "0 0 0 * * *"
+    // exécution toutes les 5 secondes
+    @Scheduled(cron = "*/5 * * * * *")
     public void runJob() {
         try {
             JobParameters params = new JobParametersBuilder()
-                    .addDate("timestamp", new Date()) // paramètre unique pour chaque exécution
+                    .addDate("timestamp", new Date())
                     .toJobParameters();
 
             JobExecution execution = jobLauncher.run(importJob, params);
-            System.out.println("🕒 Job lancé à : " + execution.getStartTime());
+            System.out.println("le Job est lancé à : " + execution.getStartTime());
         } catch (Exception e) {
             e.printStackTrace();
         }
