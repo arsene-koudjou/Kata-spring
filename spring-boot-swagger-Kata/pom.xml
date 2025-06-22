@@ -71,6 +71,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>Kata-Spring-Docker</finalName>
 	</build>
 
 </project>

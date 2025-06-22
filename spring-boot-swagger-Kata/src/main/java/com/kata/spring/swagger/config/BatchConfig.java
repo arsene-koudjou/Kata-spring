@@ -18,12 +18,25 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.io.*;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
 @EnableBatchProcessing
 @EnableScheduling
 public class BatchConfig {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/v3/api-docs/**").allowedOrigins("*");
+            }
+        };
+    }
+
     @Bean
     @StepScope
     public FlatFileItemReader<KataItem> reader(@Value("${kata.openapi.source-file}") String filePath) {
